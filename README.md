@@ -74,7 +74,16 @@ Urutan yang disarankan: US-01, US-02, US-03, US-04, US-05, US-06, lalu fitur bon
 
 ## Tentang aplikasi ini
 
-- **Nama usaha:**
-- **Pembuat:**
-- **Link aplikasi:**
-- **Fitur bonus yang dikerjakan:**
+- **Nama usaha:** Toko Orang Sigma
+- **Pembuat:** M.Rafli Dwi Saputra
+- **Link aplikasi:** https://katalog-umkm-91fg37cv0-mraflidwisaputra.vercel.app/
+- **Fitur bonus yang dikerjakan:** 
+### 1. Error Supabase URL Format (PGRST125 - Invalid path specified in request URL)
+- **Penyebab:** Variabel `SUPABASE_URL` di `.env.local` sempat berisi URL REST endpoint (`https://<project-ref>.supabase.co/rest/v1/`) dan bukan Project URL dasar. Akibatnya `@supabase/supabase-js` menambahkan `/rest/v1/produk` di belakangnya sehingga menghasilkan path ganda.
+- **Perbaikan:** 
+  1. Menambahkan normalisasi otomatis di `lib/supabase/server.js` dan `lib/supabase/session.js` dengan regex `.replace(/\/rest\/v1\/?$/, "").replace(/\/+$/, "")` agar aman dari format URL apa pun.
+  2. Memperbaiki isi `SUPABASE_URL` di `.env.local` menjadi `https://<project-ref>.supabase.co`.
+
+### 2. Error Missing SUPABASE_URL di Environment Variable
+- **Penyebab:** Variabel `SUPABASE_URL` sempat terhapus dari file `.env.local`, sehingga Server Component di `app/page.jsx` menangkap ketiadaan variabel dan memunculkan banner error di layar.
+- **Perbaikan:** Menuliskan kembali `SUPABASE_URL` yang valid ke dalam `.env.local` dan me-restart server development Next.js.
