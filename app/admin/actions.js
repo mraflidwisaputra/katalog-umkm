@@ -213,3 +213,71 @@ export async function hapusProduk(formData) {
   revalidatePath("/", "layout");
   revalidatePath("/admin");
 }
+
+export async function buatDeskripsiAI(nama, kategori) {
+  const supabase = await createSessionClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return { error: "Sesi admin berakhir. Silakan login kembali." };
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return {
+      error:
+        "GEMINI_API_KEY belum diatur di file .env.local. Tambahkan baris GEMINI_API_KEY=... untuk mengaktifkan fitur AI.",
+    };
+  }
+
+  if (!nama || !nama.trim()) {
+    return {
+      error: "Isi nama produk terlebih dahulu sebelum membuat deskripsi dengan AI.",
+    };
+  }
+
+  try {
+    const prompt = `Buatkan deskripsi produk yang menarik, singkat (1-2 kalimat), dan menggugah minat pembeli untuk produk UMKM dengan nama "${nama.trim()}"${
+      kategori ? ` dalam kategori "${kategori.trim()}"` : ""
+    }. Tuliskan langsung kalimat deskripsinya dalam bahasa Indonesia yang ramah tanpa tanda kutip dan tanpa basa-basi pembuka/penutup.`;
+
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: prompt }],
+            },
+          ],
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      return {
+        error:
+          errData?.error?.message ||
+          `Gagal menghubungi Gemini API (status ${res.status}).`,
+      };
+    }
+
+    const data = await res.json();
+    const deskripsi =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+
+    if (!deskripsi) {
+      return { error: "AI tidak mengembalikan deskripsi. Coba ulangi." };
+    }
+
+    return { deskripsi };
+  } catch (err) {
+    return { error: err.message || "Terjadi kesalahan saat memanggil Gemini API." };
+  }
+}

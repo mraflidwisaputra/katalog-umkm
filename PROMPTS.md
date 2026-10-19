@@ -160,4 +160,28 @@ Pada halaman detail produk, pengunjung dapat memilih jumlah produk yang ingin di
 **Perbaikan:**
 Tidak ada.
 
+## Fitur Bonus: US-13 Bisa di-install di HP (PWA)
 
+**Prompt [SENDIRI]:**
+Baca docs/user-stories.md bagian US-13.
+
+Buat file app/manifest.js untuk mendukung Progressive Web App (PWA) memakai ikon dari public/icons (icon-192.png dan icon-512.png) serta konfigurasi nama toko dari lib/toko.js. Tambahkan metadata PWA dan apple touch icon pada app/layout.jsx.
+
+**Hasil:**
+Aplikasi web kini terkonfigurasi sebagai PWA dengan endpoint `/manifest.webmanifest`. Pengunjung melalui browser HP (Chrome/Safari) dapat memasang katalog langsung ke layar utama (*Add to Home Screen*) selayaknya aplikasi asli dengan ikon dan warna tema toko.
+
+**Perbaikan:**
+Tidak ada.
+
+## Fitur Bonus: US-14 Deskripsi produk dibuat AI
+
+**Prompt [SENDIRI]:**
+Baca docs/user-stories.md bagian US-14 dan aturan keamanan di AGENTS.md.
+
+Buat Server Action buatDeskripsiAI di app/admin/actions.js yang menggunakan Gemini API untuk membuat deskripsi produk menarik secara otomatis berdasarkan nama dan kategori produk. Tambahkan tombol "Buat dengan AI" pada components/FormProduk.jsx di sebelah label deskripsi.
+
+**Hasil:**
+Admin dapat membuat deskripsi produk secara otomatis dengan mengklik tombol "✨ Buat dengan AI" pada form produk. Deskripsi yang dihasilkan AI langsung mengisi textarea deskripsi dan dapat diedit lebih lanjut sebelum disimpan ke database.
+
+**Perbaikan:**
+Tidak ada.
