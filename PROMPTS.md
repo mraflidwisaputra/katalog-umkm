@@ -107,3 +107,30 @@ Form di `/admin/produk/baru` berhasil menyimpan produk baru ke database Supabase
 
 **Perbaikan:**
 Tidak ada.
+
+## Fitur Bonus: US-09 Ubah produk (harus terkunci login)
+
+**Prompt [SENDIRI]:**
+Baca docs/user-stories.md bagian US-09 dan aturan keamanan nomor 3 di AGENTS.md.
+
+Buat Server Action ubahProduk di app/admin/actions.js yang memeriksa login admin di server, menyimpan perubahan data produk ke tabel "produk" di Supabase, lalu mengalihkan ke /admin. Ubah app/admin/produk/[id]/ubah/page.jsx agar mengambil data lama produk dari database Supabase dan sambungkan ke Server Action tersebut. Hapus CatatanBelumAktif dari halaman ini.
+
+**Hasil:**
+Halaman `/admin/produk/[id]/ubah` menampilkan data lama produk dari database Supabase. Form berhasil menyimpan perubahan data ke database setelah memverifikasi sesi admin, dan mengalihkan kembali ke `/admin`. `CatatanBelumAktif` telah dihapus.
+
+**Perbaikan:**
+Tidak ada.
+
+## Fitur Bonus: US-10 Hapus produk (harus terkunci login)
+
+**Prompt [SENDIRI]:**
+Baca docs/user-stories.md bagian US-10 dan aturan keamanan nomor 3 di AGENTS.md.
+
+Buat Server Action hapusProduk di app/admin/actions.js yang memeriksa login admin di server dan menghapus produk dari tabel "produk" di Supabase berdasarkan id. Ubah components/TabelProduk.jsx agar tombol "Hapus" meminta konfirmasi (confirm) sebelum menjalankan penghapusan.
+
+**Hasil:**
+Tombol "Hapus" pada tabel produk di `/admin` meminta konfirmasi terlebih dahulu melalui browser dialog. Jika disetujui, Server Action memverifikasi sesi login admin dan menghapus produk terkait dari database Supabase secara real-time.
+
+**Perbaikan:**
+Tidak ada.
+

@@ -141,3 +141,75 @@ export async function tambahProduk(prevState, formData) {
   revalidatePath("/admin");
   redirect("/admin");
 }
+
+export async function ubahProduk(prevState, formData) {
+  let data = formData instanceof FormData ? formData : prevState;
+
+  const supabase = await createSessionClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    redirect("/admin/login");
+  }
+
+  const id = data?.get("id")?.toString();
+  const nama = data?.get("nama")?.toString().trim();
+  const hargaRaw = data?.get("harga")?.toString().trim();
+  const harga = parseInt(hargaRaw || "0", 10);
+  const kategori = data?.get("kategori")?.toString().trim() || null;
+  const foto_url = data?.get("foto_url")?.toString().trim() || null;
+  const deskripsi = data?.get("deskripsi")?.toString().trim() || null;
+
+  if (!id || !nama || isNaN(harga) || harga < 0) {
+    return { error: "ID, nama, dan harga produk (>= 0) wajib diisi dengan benar." };
+  }
+
+  const { error } = await supabase
+    .from("produk")
+    .update({
+      nama,
+      harga,
+      kategori,
+      foto_url,
+      deskripsi,
+    })
+    .eq("id", id);
+
+  if (error) {
+    return { error: error.message || "Gagal mengubah produk di database." };
+  }
+
+  revalidatePath("/", "layout");
+  revalidatePath("/admin");
+  revalidatePath(`/produk/${id}`);
+  redirect("/admin");
+}
+
+export async function hapusProduk(formData) {
+  const supabase = await createSessionClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    redirect("/admin/login");
+  }
+
+  const id = formData.get("id")?.toString();
+  if (!id) {
+    throw new Error("ID produk tidak valid.");
+  }
+
+  const { error } = await supabase.from("produk").delete().eq("id", id);
+
+  if (error) {
+    throw new Error(error.message || "Gagal menghapus produk dari database.");
+  }
+
+  revalidatePath("/", "layout");
+  revalidatePath("/admin");
+}
