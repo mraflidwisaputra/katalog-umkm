@@ -98,3 +98,46 @@ export async function gantiPassword(prevState, formData) {
 }
 
 export const ubahPassword = gantiPassword;
+
+export async function tambahProduk(prevState, formData) {
+  let data = formData instanceof FormData ? formData : prevState;
+
+  const supabase = await createSessionClient();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    redirect("/admin/login");
+  }
+
+  const nama = data?.get("nama")?.toString().trim();
+  const hargaRaw = data?.get("harga")?.toString().trim();
+  const harga = parseInt(hargaRaw || "0", 10);
+  const kategori = data?.get("kategori")?.toString().trim() || null;
+  const foto_url = data?.get("foto_url")?.toString().trim() || null;
+  const deskripsi = data?.get("deskripsi")?.toString().trim() || null;
+
+  if (!nama || isNaN(harga) || harga < 0) {
+    return { error: "Nama dan harga produk (>= 0) wajib diisi dengan benar." };
+  }
+
+  const { error } = await supabase.from("produk").insert([
+    {
+      nama,
+      harga,
+      kategori,
+      foto_url,
+      deskripsi,
+    },
+  ]);
+
+  if (error) {
+    return { error: error.message || "Gagal menambahkan produk ke database." };
+  }
+
+  revalidatePath("/", "layout");
+  revalidatePath("/admin");
+  redirect("/admin");
+}

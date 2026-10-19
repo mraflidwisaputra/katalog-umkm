@@ -84,7 +84,7 @@ Tidak ada.
 
 ## Fitur Bonus: US-07 List produk di halaman admin dari database
 
-**Prompt [SENDIRI]:**
+**Prompt:**
 Baca docs/user-stories.md bagian US-07.
 
 Ubah app/admin/page.jsx supaya daftar produk diambil dari tabel "produk" di Supabase, di sisi server. Gunakan komponen TabelProduk yang sudah ada dan hapus penggunaan data contoh dari lib/data-contoh.js.
@@ -95,4 +95,15 @@ Daftar produk di halaman `/admin` berhasil diambil langsung dari tabel `produk` 
 **Perbaikan:**
 Tidak ada.
 
+## Fitur Bonus: US-08 Tambah produk (harus terkunci login)
 
+**Prompt:**
+Baca docs/user-stories.md bagian US-08 dan aturan keamanan nomor 3 di AGENTS.md.
+
+Buat Server Action tambahProduk di app/admin/actions.js yang memeriksa login admin di server, menyimpan produk baru ke tabel "produk" di Supabase, lalu mengalihkan ke /admin. Sambungkan form di app/admin/produk/baru/page.jsx ke Server Action tersebut dan hapus CatatanBelumAktif dari halaman ini.
+
+**Hasil:**
+Form di `/admin/produk/baru` berhasil menyimpan produk baru ke database Supabase setelah memverifikasi autentikasi admin di server. Setelah berhasil disimpan, pengguna dialihkan kembali ke `/admin` dan produk baru langsung terlihat di tabel. `CatatanBelumAktif` telah dihapus.
+
+**Perbaikan:**
+Tidak ada.
