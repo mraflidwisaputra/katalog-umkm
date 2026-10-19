@@ -62,11 +62,23 @@ Tidak ada.
 ## US-06 Proteksi halaman admin
 
 **Prompt:**
+Baca AGENTS.md aturan keamanan nomor 3 dan 4, dan docs/user-stories.md bagian US-06.
 
+Buat file proxy.js di root proyek (Next.js 16). Semua rute /admin kecuali /admin/login wajib login dengan Supabase Auth; kalau belum login, alihkan ke /admin/login. Pastikan juga setiap Server Action yang mengubah data memeriksa login di server. Hapus CatatanBelumAktif dari halaman /admin.
 **Hasil:**
-
+File proxy.js berhasil dibuat di root proyek. Membuka rute /admin atau sub-rutenya tanpa login otomatis dialihkan ke /admin/login. Membuka /admin/login saat sudah login dialihkan ke /admin. CatatanBelumAktif di halaman /admin sudah dihapus.
 **Perbaikan:**
+Tidak ada.
 
 ## Debugging dan fitur bonus
 
-Tambahkan bagian baru untuk setiap error yang kamu perbaiki atau fitur bonus yang kamu kerjakan.
+### 1. Error Supabase URL Format (PGRST125 - Invalid path specified in request URL)
+- **Penyebab:** Variabel `SUPABASE_URL` di `.env.local` sempat berisi URL REST endpoint (`https://<project-ref>.supabase.co/rest/v1/`) dan bukan Project URL dasar. Akibatnya `@supabase/supabase-js` menambahkan `/rest/v1/produk` di belakangnya sehingga menghasilkan path ganda.
+- **Perbaikan:** 
+  1. Menambahkan normalisasi otomatis di `lib/supabase/server.js` dan `lib/supabase/session.js` dengan regex `.replace(/\/rest\/v1\/?$/, "").replace(/\/+$/, "")` agar aman dari format URL apa pun.
+  2. Memperbaiki isi `SUPABASE_URL` di `.env.local` menjadi `https://<project-ref>.supabase.co`.
+
+### 2. Error Missing SUPABASE_URL di Environment Variable
+- **Penyebab:** Variabel `SUPABASE_URL` sempat terhapus dari file `.env.local`, sehingga Server Component di `app/page.jsx` menangkap ketiadaan variabel dan memunculkan banner error di layar.
+- **Perbaikan:** Menuliskan kembali `SUPABASE_URL` yang valid ke dalam `.env.local` dan me-restart server development Next.js.
+
