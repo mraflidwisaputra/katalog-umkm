@@ -82,3 +82,17 @@ Tidak ada.
 - **Penyebab:** Variabel `SUPABASE_URL` sempat terhapus dari file `.env.local`, sehingga Server Component di `app/page.jsx` menangkap ketiadaan variabel dan memunculkan banner error di layar.
 - **Perbaikan:** Menuliskan kembali `SUPABASE_URL` yang valid ke dalam `.env.local` dan me-restart server development Next.js.
 
+## Fitur Bonus: US-07 List produk di halaman admin dari database
+
+**Prompt [SENDIRI]:**
+Baca docs/user-stories.md bagian US-07.
+
+Ubah app/admin/page.jsx supaya daftar produk diambil dari tabel "produk" di Supabase, di sisi server. Gunakan komponen TabelProduk yang sudah ada dan hapus penggunaan data contoh dari lib/data-contoh.js.
+
+**Hasil:**
+Daftar produk di halaman `/admin` berhasil diambil langsung dari tabel `produk` di Supabase di sisi server. Tampilan tabel produk menggunakan komponen `TabelProduk` dan data contoh dari `lib/data-contoh.js` sudah tidak lagi digunakan.
+
+**Perbaikan:**
+Tidak ada.
+
+
