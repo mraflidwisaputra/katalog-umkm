@@ -84,7 +84,7 @@ Tidak ada.
 
 ## Fitur Bonus: US-07 List produk di halaman admin dari database
 
-**Prompt:**
+**Prompt[SENDIRI]:**
 Baca docs/user-stories.md bagian US-07.
 
 Ubah app/admin/page.jsx supaya daftar produk diambil dari tabel "produk" di Supabase, di sisi server. Gunakan komponen TabelProduk yang sudah ada dan hapus penggunaan data contoh dari lib/data-contoh.js.
@@ -97,7 +97,7 @@ Tidak ada.
 
 ## Fitur Bonus: US-08 Tambah produk (harus terkunci login)
 
-**Prompt:**
+**Prompt[SENDIRI]:**
 Baca docs/user-stories.md bagian US-08 dan aturan keamanan nomor 3 di AGENTS.md.
 
 Buat Server Action tambahProduk di app/admin/actions.js yang memeriksa login admin di server, menyimpan produk baru ke tabel "produk" di Supabase, lalu mengalihkan ke /admin. Sambungkan form di app/admin/produk/baru/page.jsx ke Server Action tersebut dan hapus CatatanBelumAktif dari halaman ini.
@@ -133,4 +133,31 @@ Tombol "Hapus" pada tabel produk di `/admin` meminta konfirmasi terlebih dahulu 
 
 **Perbaikan:**
 Tidak ada.
+
+## Fitur Bonus: US-11 Filter kategori atau pencarian
+
+**Prompt [SENDIRI]:**
+Baca docs/user-stories.md bagian US-11.
+
+Buat komponen KatalogProduk dengan fitur pencarian nama produk dan penyaringan berdasarkan kategori. Hubungkan dengan daftar produk dari database di app/page.jsx tanpa mengorbankan keamanan akses server.
+
+**Hasil:**
+Pengunjung dapat mencari produk secara instan berdasarkan nama/deskripsi melalui input pencarian, serta menyaring katalog berdasarkan kategori yang tersedia melalui tombol kategori (pills). Tampilan tetap responsif dan data diambil di server.
+
+**Perbaikan:**
+Tidak ada.
+
+## Fitur Bonus: US-12 Pilih jumlah atau varian
+
+**Prompt [SENDIRI]:**
+Baca docs/user-stories.md bagian US-12.
+
+Ubah components/TombolWhatsApp.jsx agar pengunjung dapat memilih jumlah pesanan (counter +/-) dan memasukkan varian/catatan pemesanan sebelum memesan. Pastikan pilihan jumlah, varian, dan total harga otomatis tertera dalam teks pesan WhatsApp.
+
+**Hasil:**
+Pada halaman detail produk, pengunjung dapat memilih jumlah produk yang ingin dipesan (disertai perhitungan subtotal otomatis) dan mengisi catatan varian (opsional). Ketika tombol WhatsApp ditekan, pesan otomatis memuat rincian nama produk, jumlah, varian, dan total harga yang harus dibayar.
+
+**Perbaikan:**
+Tidak ada.
+
 
