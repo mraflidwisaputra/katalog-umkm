@@ -29,10 +29,13 @@ tidak ada
 ## US-03 Pesan via WhatsApp
 
 **Prompt:**
+Baca docs/rancangan-teknis.md bagian "Pesan WhatsApp (US-03)".
 
+Ubah components/TombolWhatsApp.jsx menjadi tautan yang membuka https://wa.me/ ke nomor di lib/toko.js, dengan pesan otomatis berisi nama dan harga produk dalam format rupiah. Pesan di-encode dengan encodeURIComponent dan dibuka di tab baru. Pertahankan tampilan tombolnya. Hapus CatatanBelumAktif yang menyebut US-03 di halaman detail produk.
 **Hasil:**
-
+Tab baru akan terbuka mengarah ke WhatsApp Web atau aplikasi WhatsApp dengan nomor tujuan dari lib/toko.js (6282268287135) serta pesan otomatis yang sudah terisi
 **Perbaikan:**
+tidak ada
 
 ## US-04 Login admin
 
